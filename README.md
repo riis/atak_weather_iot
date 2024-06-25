@@ -100,7 +100,7 @@ Note that you may need to change `.\mosquitto.conf` to `./mosquitto.conf` if you
 
 [ecowitt2mqtt](https://github.com/bachya/ecowitt2mqtt) is an open source web server that receives HTTP requests from the weather console, parses the data, and sends it to the Mosquitto MQTT broker. Most home weather stations only support sending data via HTTP to a custom server, so it's not possible to directly connect the weather console to the MQTT broker without special hardware. By default, ecowitt2mqtt will run on port `8080`. You can refer to their [documentation](https://github.com/bachya/ecowitt2mqtt) if you'd like to customize the behaviour further.
 
-Depending on your weather station, the steps to connect it to the ecowitt2mqtt server may differ slightly. Some weather stations handle their configuration slightly differently, so you may need to play around with your device if you're not using the RainmanWeather station. This is discussed more later on.
+Depending on your weather station, the steps to connect it to the ecowitt2mqtt server may differ slightly. Some weather stations handle their configuration slightly differently, so you may need to play around with your device if you're not using the RainmanWeather station.
 
 To get the server running, run the following docker command:
 
