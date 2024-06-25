@@ -33,7 +33,7 @@ The weather data must pass through several intermediary services before reaching
 Here is a visual representation of the sequence:
 
 ```mermaid
-graph LR
+graph TD
     A[Weather Station] -->|LoRa| B[Weather Console Screen]
     B -->|HTTP GET| C[ecowitt2mqtt Server]
     C -->|MQTT| D[Mosquitto MQTT Broker]
