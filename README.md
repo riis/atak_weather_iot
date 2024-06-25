@@ -34,9 +34,9 @@ Here is a visual representation of the sequence:
 
 ```mermaid
 graph TD
-    A[Weather Station] -->|LoRa| B[Weather Console (Screen)]
+    A[Weather Station] -->|LoRa| B[Weather Console \(Screen\)]
     B -->|HTTP GET| C[ecowitt2mqtt Server]
-    C -->|MQTT| D[Mosquitto (MQTT Broker)]
+    C -->|MQTT| D[Mosquitto \(MQTT Broker\)]
     D -->|MQTT| E[ATAK Plugin]
 ```
 
