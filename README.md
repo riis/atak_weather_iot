@@ -126,6 +126,6 @@ We run these services using Docker with the host network adapter for convenience
 
 ### Getting `--network host` Working
 
-Using the host network adapter is considered a Beta Feature in Docker Desktop (Windows and MacOS users), and must be turned on before it can be used. If you're not seeing your weather data hit the ecowitt2mwtt server, this may be why. Unfortunately, Docker Desktop will not display an error when host networking is not enabled, so make sure it's enabled before proceeding.
+Using the host network adapter is considered a Beta Feature in Docker Desktop (Windows and MacOS users), and must be turned on before it can be used. If you're not seeing your weather data hit the ecowitt2mqtt server, this may be why. Unfortunately, Docker Desktop will not display an error when host networking is not enabled, so make sure it's enabled before proceeding.
 
 To enable host networking, you'll first need to login on the Docker Desktop app, then navigate to `Settings -> Features in development`. If unchecked, check the box that says "Enable Host Networking" and hit the button to apply and restart.
