@@ -16,12 +16,33 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name" />
+            android:text="@string/app_label"
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="57dp"
             android:text="@string/app_desc" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mqtt_prompt" />
+
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="8"
+            android:inputType="text"
+            android:text="@string/sample_mqtt_address" />
+
+        <Button
+            android:id="@+id/mqtt_connect_btn"
+            android:layout_width="187dp"
+            android:layout_height="wrap_content"
+            android:text="@string/connect" />
 
     </LinearLayout>
 </ScrollView>
