@@ -1,6 +1,7 @@
 package com.atakmap.android.weatheriotplugin.plugin
 
 import android.content.Context
+import android.content.Intent
 import com.atak.plugins.impl.AbstractPluginLifecycle
 import com.atakmap.android.weatheriotplugin.WeatherIoTPluginMapComponent
 

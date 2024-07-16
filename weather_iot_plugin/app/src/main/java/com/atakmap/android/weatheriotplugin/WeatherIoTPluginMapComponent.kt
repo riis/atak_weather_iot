@@ -27,7 +27,7 @@ class WeatherIoTPluginMapComponent : DropDownMapComponent() {
 
         Log.d(TAG, "registering the plugin filter")
         val ddFilter = DocumentedIntentFilter()
-        ddFilter.addAction(WeatherIoTPluginDropDownReceiver.Companion.SHOW_PLUGIN)
+        ddFilter.addAction(WeatherIoTPluginDropDownReceiver.SHOW_PLUGIN)
         registerDropDownReceiver(ddr, ddFilter)
     }
 
@@ -36,6 +36,6 @@ class WeatherIoTPluginMapComponent : DropDownMapComponent() {
     }
 
     companion object {
-        private const val TAG = "PluginTemplateMapComponent"
+        private const val TAG = "WeatherIoTPluginMapComponent"
     }
 }

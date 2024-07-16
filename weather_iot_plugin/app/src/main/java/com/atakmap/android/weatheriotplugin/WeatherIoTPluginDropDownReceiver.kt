@@ -9,16 +9,21 @@ import com.atak.plugins.impl.PluginLayoutInflater
 import com.atakmap.android.dropdown.DropDown.OnStateListener
 import com.atakmap.android.dropdown.DropDownReceiver
 import com.atakmap.android.maps.MapView
-import com.atakmap.android.weatheriotplugin.mqtt.MQTTClient
 import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.coremap.log.Log
+import com.hivemq.client.internal.mqtt.util.MqttChecks.connect
+import com.hivemq.client.mqtt.datatypes.MqttQos
+import com.hivemq.client.mqtt.exceptions.ConnectionFailedException
+import com.hivemq.client.mqtt.exceptions.MqttClientStateException
+import com.hivemq.client.mqtt.mqtt3.Mqtt3BlockingClient
+import com.hivemq.client.mqtt.mqtt3.Mqtt3Client
 
 class WeatherIoTPluginDropDownReceiver(
     mapView: MapView?,
     private val pluginContext: Context
 ) : DropDownReceiver(mapView), OnStateListener {
 
-    private lateinit var mqttClient: MQTTClient
+    private lateinit var mqttClient: Mqtt3BlockingClient
 
     // Remember to use the PluginLayoutInflator if you are actually inflating a custom view
     // In this case, using it is not necessary - but I am putting it here to remind
@@ -35,14 +40,7 @@ class WeatherIoTPluginDropDownReceiver(
 
         connectButton.setOnClickListener {
             val brokerUri = mainView.findViewById<EditText>(R.id.brokerUriText).text.toString()
-            if (mapView != null) {
-                mqttClient = MQTTClient(mapView.context, brokerUri)
-                Log.d(TAG, "successful creation of MqttClient!")
-                mqttClient.connect(
-                    username = "hello",
-                    password = "password"
-                )
-            }
+            subMqtt()
         }
     }
 
@@ -73,6 +71,33 @@ class WeatherIoTPluginDropDownReceiver(
     }
 
     override fun onDropDownClose() {
+    }
+
+    private fun subMqtt() {
+        mqttClient = Mqtt3Client.builder()
+            .identifier("atak_plugin")
+//			.serverHost("minjerd-riis-laptop.local") // Android sometimes fails to resolve .local domains :(
+//          .serverHost("192.168.1.67") // Mark's laptop on home network
+//			.serverHost("10.5.2.251") // Mark's laptop on RIIS network
+//			.serverHost("192.168.1.195") // Michal's laptop on home network
+            .serverHost("192.168.2.182") // Zain's laptop on home network
+            .serverPort(1883)
+            .buildBlocking().apply {
+                try {
+                    connect()
+                    toAsync().subscribeWith()
+                        .topicFilter("weather/data")
+                        .qos(MqttQos.AT_LEAST_ONCE)
+                        .callback { callback ->
+                            Log.d(TAG, callback.payloadAsBytes.decodeToString())
+                        }
+                        .send()
+                } catch (e: ConnectionFailedException) {
+                    Log.e(TAG, "MQTT Connection failed! $e")
+                } catch (e: MqttClientStateException) {
+                    Log.e(TAG, "MQTT Client State failed!", e)
+                }
+            }
     }
 
     companion object {
