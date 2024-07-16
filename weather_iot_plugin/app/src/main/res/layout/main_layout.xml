@@ -31,11 +31,11 @@
             android:text="@string/mqtt_prompt" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/brokerUriText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="8"
-            android:inputType="text"
+            android:inputType="textUri"
             android:text="@string/sample_mqtt_address" />
 
         <Button

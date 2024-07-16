@@ -14,7 +14,7 @@ buildscript {
     def takdevVersion = '2.+'
 
     ext.getValueFromPropertiesFile = { propFile, key ->
-        if(!propFile.isFile() || !propFile.canRead())
+        if (!propFile.isFile() || !propFile.canRead())
             return null
         def prop = new Properties()
         def reader = propFile.newReader()
@@ -57,10 +57,11 @@ buildscript {
                 password = takrepoPassword
             }
         }
+        maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
-        if(isDevKitEnabled()) {
+        if (isDevKitEnabled()) {
             classpath "com.atakmap.gradle:atak-gradle-takdev:${takdevVersion}"
         } else {
             classpath files(takdevPlugin)
@@ -74,9 +75,7 @@ allprojects {
         google()
         mavenCentral()
         mavenLocal()
-        maven {
-            url "https://jitpack.io"
-        }
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -107,9 +106,9 @@ android {
             def kp = getValueFromPropertiesFile(project.rootProject.file('local.properties'), 'takDebugKeyPassword')
 
             if (kf == null) {
-                 throw new GradleException("No signing key configured!")
+                throw new GradleException("No signing key configured!")
             }
- 
+
             storeFile file(kf)
             if (kfp != null) storePassword kfp
             if (ka != null) keyAlias ka
@@ -122,7 +121,7 @@ android {
             def kp = getValueFromPropertiesFile(project.rootProject.file('local.properties'), 'takReleaseKeyPassword')
 
             if (kf == null) {
-                 throw new GradleException("No signing key configured!")
+                throw new GradleException("No signing key configured!")
             }
 
             storeFile file(kf)
@@ -252,6 +251,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     implementation 'androidx.core:core-ktx:1.9.0'
+
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.4'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+
     testImplementation 'junit:junit:4.12'
 }
 

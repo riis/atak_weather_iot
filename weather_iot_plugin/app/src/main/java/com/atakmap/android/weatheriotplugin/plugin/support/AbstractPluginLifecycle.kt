@@ -1,104 +1,88 @@
+package com.atakmap.android.weatheriotplugin.plugin.support
 
-package com.atakmap.android.weatheriotplugin.plugin.support;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-
-import com.atakmap.android.maps.MapComponent;
-import com.atakmap.android.maps.MapView;
-
-import transapps.maps.plugin.lifecycle.Lifecycle;
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.Configuration;
-import com.atakmap.coremap.log.Log;
+import android.app.Activity
+import android.content.Context
+import android.content.res.Configuration
+import com.atakmap.android.maps.MapComponent
+import com.atakmap.android.maps.MapView
+import com.atakmap.coremap.log.Log
+import transapps.maps.plugin.lifecycle.Lifecycle
+import java.util.LinkedList
 
 /**
  * Do not use unless deploying your plugin with a version of ATAK less than 4.5.1.
- * @deprecated
  */
-@Deprecated
-abstract public class AbstractPluginLifecycle implements Lifecycle {
+@Deprecated("")
+abstract class AbstractPluginLifecycle(
+    private val pluginContext: Context,
+    component: MapComponent
+) : Lifecycle {
+    private val overlays: MutableCollection<MapComponent> = LinkedList()
+    private var mapView: MapView? = null
 
-    private final Context pluginContext;
-    private final Collection<MapComponent> overlays;
-    private MapView mapView;
-
-    private final static String TAG = "AbstractPluginLifecycle";
-
-    public AbstractPluginLifecycle(Context ctx, MapComponent component) {
-        this.pluginContext = ctx;
-        this.overlays = new LinkedList<>();
-        this.mapView = null;
-        this.overlays.add(component);
+    init {
+        overlays.add(component)
         //PluginNativeLoader.init(ctx);
     }
 
-    @Override
-    final public void onConfigurationChanged(Configuration arg0) {
-        for (MapComponent c : this.overlays)
-            c.onConfigurationChanged(arg0);
+    override fun onConfigurationChanged(arg0: Configuration) {
+        for (c in this.overlays) c.onConfigurationChanged(arg0)
     }
 
-    @Override
-    final public void onCreate(final Activity arg0,
-            final transapps.mapi.MapView arg1) {
-        if (arg1 == null || !(arg1.getView() instanceof MapView)) {
-            Log.w(TAG, "This plugin is only compatible with ATAK MapView");
-            return;
+    override fun onCreate(
+        arg0: Activity,
+        arg1: transapps.mapi.MapView
+    ) {
+        if (arg1 == null || arg1.view !is MapView) {
+            Log.w(TAG, "This plugin is only compatible with ATAK MapView")
+            return
         }
-        this.mapView = (MapView) arg1.getView();
+        this.mapView = arg1.view as MapView
 
         // create components
-        Iterator<MapComponent> iter = this.overlays
-                .iterator();
-        MapComponent c;
+        val iter = overlays
+            .iterator()
+        var c: MapComponent
         while (iter.hasNext()) {
-            c = iter.next();
+            c = iter.next()
             try {
-                c.onCreate(pluginContext, arg0.getIntent(), mapView);
-            } catch (Exception e) {
-                Log.w(TAG,
-                        "Unhandled exception trying to create overlays MapComponent",
-                        e);
-                iter.remove();
+                c.onCreate(pluginContext, arg0.intent, mapView)
+            } catch (e: Exception) {
+                Log.w(
+                    TAG,
+                    "Unhandled exception trying to create overlays MapComponent",
+                    e
+                )
+                iter.remove()
             }
         }
     }
 
-    @Override
-    final public void onDestroy() {
-        for (MapComponent c : this.overlays)
-            c.onDestroy(this.pluginContext, this.mapView);
+    override fun onDestroy() {
+        for (c in this.overlays) c.onDestroy(this.pluginContext, this.mapView)
     }
 
-    @Override
-    final public void onFinish() {
+    override fun onFinish() {
         // XXX - no corresponding MapComponent method
     }
 
-    @Override
-    final public void onPause() {
-        for (MapComponent c : this.overlays)
-            c.onPause(this.pluginContext, this.mapView);
+    override fun onPause() {
+        for (c in this.overlays) c.onPause(this.pluginContext, this.mapView)
     }
 
-    @Override
-    final public void onResume() {
-        for (MapComponent c : this.overlays)
-            c.onResume(this.pluginContext, this.mapView);
+    override fun onResume() {
+        for (c in this.overlays) c.onResume(this.pluginContext, this.mapView)
     }
 
-    @Override
-    final public void onStart() {
-        for (MapComponent c : this.overlays)
-            c.onStart(this.pluginContext, this.mapView);
+    override fun onStart() {
+        for (c in this.overlays) c.onStart(this.pluginContext, this.mapView)
     }
 
-    @Override
-    final public void onStop() {
-        for (MapComponent c : this.overlays)
-            c.onStop(this.pluginContext, this.mapView);
+    override fun onStop() {
+        for (c in this.overlays) c.onStop(this.pluginContext, this.mapView)
+    }
+
+    companion object {
+        private const val TAG = "AbstractPluginLifecycle"
     }
 }

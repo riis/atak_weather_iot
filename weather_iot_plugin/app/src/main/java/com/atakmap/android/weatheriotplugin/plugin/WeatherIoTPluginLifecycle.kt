@@ -1,24 +1,22 @@
+package com.atakmap.android.weatheriotplugin.plugin
 
-package com.atakmap.android.weatheriotplugin.plugin;
-
-
-import com.atak.plugins.impl.AbstractPluginLifecycle;
-import com.atakmap.android.weatheriotplugin.WeatherIoTPluginMapComponent;
-import android.content.Context;
+import android.content.Context
+import com.atak.plugins.impl.AbstractPluginLifecycle
+import com.atakmap.android.weatheriotplugin.WeatherIoTPluginMapComponent
 
 
 /**
  * Please note:
- *     Support for versions prior to 4.5.1 can make use of a copy of AbstractPluginLifeCycle shipped with
- *     the plugin.
+ * Support for versions prior to 4.5.1 can make use of a copy of AbstractPluginLifeCycle shipped with
+ * the plugin.
  */
-public class WeatherIoTPluginLifecycle extends AbstractPluginLifecycle {
-
-    private final static String TAG = "WeatherIoTPluginLifecycle";
-
-    public WeatherIoTPluginLifecycle(Context ctx) {
-        super(ctx, new WeatherIoTPluginMapComponent());
-        PluginNativeLoader.init(ctx);
+class WeatherIoTPluginLifecycle(ctx: Context) :
+    AbstractPluginLifecycle(ctx, WeatherIoTPluginMapComponent()) {
+    init {
+        PluginNativeLoader.init(ctx)
     }
 
+    companion object {
+        private const val TAG = "WeatherIoTPluginLifecycle"
+    }
 }
