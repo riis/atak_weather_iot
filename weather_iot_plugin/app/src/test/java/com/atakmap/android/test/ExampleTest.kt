@@ -1,13 +1,11 @@
+package com.atakmap.android.test
 
-package com.atakmap.android.test;
+import junit.framework.Assert
+import org.junit.Test
 
-import junit.framework.Assert;
-
-import org.junit.Test;
-
-public class ExampleTest {
+class ExampleTest {
     @Test
-    public void basicArithmetic() {
-        Assert.assertEquals(4, 2 + 2);
+    fun basicArithmetic() {
+        Assert.assertEquals(4, 2 + 2)
     }
 }
