@@ -1,40 +1,14 @@
-import http.client
-import urllib.parse
-from typing import Dict, Union
-import time
+try:
+    import paho.mqtt.client as mqtt
+except ImportError:
+    print("The 'paho-mqtt' library is not installed. Please install it using 'pip install paho-mqtt'.")
+    exit(1)
+
 import argparse
 import random
-
-class Response:
-    def __init__(self, status_code: int, reason: str, headers: Dict[str, str], content: bytes, text: str) -> None:
-        self.status_code = status_code
-        self.reason = reason
-        self.headers = headers
-        self.content = content
-        self.text = text
-
-    def __str__(self) -> str:
-        return f'<Response {self.status_code}>'
-
-def get_request(url: str) -> Response:
-    parsed_url = urllib.parse.urlparse(url)
-    port = parsed_url.port or (443 if parsed_url.scheme == 'https' else 80)
-
-    conn = http.client.HTTPSConnection(parsed_url.hostname, port) if parsed_url.scheme == 'https' else http.client.HTTPConnection(parsed_url.hostname, port)
-    path = parsed_url.path + ('?' + parsed_url.query if parsed_url.query else '')
-
-    conn.request('GET', path)
-    response = conn.getresponse()
-    
-    status_code = response.status
-    reason = response.reason
-    headers = dict(response.getheaders())
-    body = response.read()
-    text = body.decode('utf-8')
-    
-    conn.close()
-    
-    return Response(status_code, reason, headers, body, text)
+import json
+import time
+from typing import Dict, Union
 
 def update_numeric_values(params: Dict[str, Union[str, float, int]]) -> Dict[str, Union[str, float, int]]:
     params['temp'] = float(params['temp']) + random.uniform(-0.5, 0.5)
@@ -66,13 +40,16 @@ def update_numeric_values(params: Dict[str, Union[str, float, int]]) -> Dict[str
     return params
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Mocking Weather Request CLI")
+    parser = argparse.ArgumentParser(description="Mocking Weather MQTT Publisher")
 
-    # Config values
-    parser.add_argument('--base-url', default='http://127.0.0.1:8080/data/report/?', help='Base URL for the request')
-    parser.add_argument('--interval', type=int, default=5, help='Interval between requests in seconds')
+    # MQTT broker details
+    parser.add_argument('--broker', default='localhost', help='MQTT broker address')
+    parser.add_argument('--port', type=int, default=1883, help='MQTT broker port')
+    parser.add_argument('--topic', default='weather/data', help='MQTT topic to publish to')
+    parser.add_argument('--interval', type=int, default=5, help='Interval between messages in seconds')
 
     # Weather station values
+
     parser.add_argument('--ID', default='stationid', help='Station ID')
     parser.add_argument('--PASSWORD', default='stationkey', help='Password')
     parser.add_argument('--latitude', type=float, default=42.605589, help='latitude of the weather station')
@@ -122,23 +99,29 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     params = vars(args)
-    base_url = params.pop("base_url")
+    broker = params.pop("broker")
+    port = params.pop("port")
+    topic = params.pop("topic")
     interval = int(params.pop("interval"))
 
+    client = mqtt.Client()
+    client.connect(broker, port, 60)
+    client.loop_start()
+
     print("=====================================")
-    print("====== Mocking Weather Request ======")
+    print("====== Mocking Weather Publisher ====")
     print("=====================================")
     print()
     
-    while True:
-        params = update_numeric_values(params)
-        query_string = urllib.parse.urlencode(params)
-        url = f"{base_url}{query_string}"
-        
-        print(f"\n\nSending request to\n{url}")
-        try:
-            response = get_request(url)
-            print(response)
-        except Exception as e:
-            print(f"Failed to send request: {e}")
-        time.sleep(interval)
+    try:
+        while True:
+            params = update_numeric_values(params)
+            payload = json.dumps(params)
+            print(f"\n\nPublishing to {topic}:\n{payload}")
+            client.publish(topic, payload)
+            time.sleep(interval)
+    except KeyboardInterrupt:
+        print("Exiting...")
+    finally:
+        client.loop_stop()
+        client.disconnect()
