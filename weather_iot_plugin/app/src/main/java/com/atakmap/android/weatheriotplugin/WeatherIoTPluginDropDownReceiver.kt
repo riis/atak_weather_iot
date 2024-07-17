@@ -11,7 +11,6 @@ import com.atakmap.android.dropdown.DropDownReceiver
 import com.atakmap.android.maps.MapView
 import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.coremap.log.Log
-import com.hivemq.client.internal.mqtt.util.MqttChecks.connect
 import com.hivemq.client.mqtt.datatypes.MqttQos
 import com.hivemq.client.mqtt.exceptions.ConnectionFailedException
 import com.hivemq.client.mqtt.exceptions.MqttClientStateException
@@ -101,9 +100,7 @@ class WeatherIoTPluginDropDownReceiver(
     }
 
     companion object {
-        val TAG: String = WeatherIoTPluginDropDownReceiver::class.java
-            .simpleName
-
+        private const val TAG = "WeatherIoTPluginDropDownReceiver"
         const val SHOW_PLUGIN: String = "com.atakmap.android.weatheriotplugin.SHOW_PLUGIN"
     }
 }
