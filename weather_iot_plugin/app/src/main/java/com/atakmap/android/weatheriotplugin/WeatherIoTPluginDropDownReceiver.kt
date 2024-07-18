@@ -17,13 +17,17 @@ import com.hivemq.client.mqtt.exceptions.ConnectionFailedException
 import com.hivemq.client.mqtt.exceptions.MqttClientStateException
 import com.hivemq.client.mqtt.mqtt3.Mqtt3BlockingClient
 import com.hivemq.client.mqtt.mqtt3.Mqtt3Client
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class WeatherIoTPluginDropDownReceiver(
     mapView: MapView?,
     private val pluginContext: Context
 ) : DropDownReceiver(mapView), OnStateListener {
 
-    private lateinit var mqttClient: Mqtt3BlockingClient
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+    private val weatherViewModel = WeatherViewModel(coroutineScope)
 
     // Remember to use the PluginLayoutInflator if you are actually inflating a custom view
     // In this case, using it is not necessary - but I am putting it here to remind
@@ -46,7 +50,7 @@ class WeatherIoTPluginDropDownReceiver(
 
             try {
                 brokerPort = brokerPortStr.toInt()
-                subMqtt(brokerUri, brokerPort)
+                weatherViewModel.subMqtt(brokerUri, brokerPort)
             } catch (e: NumberFormatException) {
                 Toast.makeText(mainView.context, "Invalid port number", Toast.LENGTH_SHORT).show()
             } catch (e: IllegalArgumentException) {
@@ -83,29 +87,6 @@ class WeatherIoTPluginDropDownReceiver(
     }
 
     override fun onDropDownClose() {
-    }
-
-    private fun subMqtt(serverHostIp: String, port: Int) {
-        mqttClient = Mqtt3Client.builder()
-            .identifier("atak_plugin")
-            .serverHost(serverHostIp)
-            .serverPort(port)
-            .buildBlocking().apply {
-                try {
-                    connect()
-                    toAsync().subscribeWith()
-                        .topicFilter("weather/data")
-                        .qos(MqttQos.AT_LEAST_ONCE)
-                        .callback { callback ->
-                            Log.d(TAG, callback.payloadAsBytes.decodeToString())
-                        }
-                        .send()
-                } catch (e: ConnectionFailedException) {
-                    Log.e(TAG, "MQTT Connection failed! $e")
-                } catch (e: MqttClientStateException) {
-                    Log.e(TAG, "MQTT Client State failed! $e")
-                }
-            }
     }
 
     companion object {
