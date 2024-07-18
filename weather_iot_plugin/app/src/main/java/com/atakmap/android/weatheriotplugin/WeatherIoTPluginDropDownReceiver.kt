@@ -14,15 +14,15 @@ import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.coremap.log.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class WeatherIoTPluginDropDownReceiver(
     mapView: MapView?,
-    pluginContext: Context
+    pluginContext: Context,
+    coroutineScope: CoroutineScope,
+    private val weatherViewModel: WeatherViewModel
 ) : DropDownReceiver(mapView), OnStateListener {
-
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
-
-    private val weatherViewModel = WeatherViewModel(coroutineScope)
 
     // Remember to use the PluginLayoutInflator if you are actually inflating a custom view
     // In this case, using it is not necessary - but I am putting it here to remind
@@ -52,6 +52,12 @@ class WeatherIoTPluginDropDownReceiver(
             } catch (e: IllegalArgumentException) {
                 Toast.makeText(mainView.context, "Invalid IP Address", Toast.LENGTH_SHORT).show()
                 Log.w(TAG, e)
+            }
+        }
+
+        coroutineScope.launch {
+            weatherViewModel.weatherStations.collect {
+
             }
         }
     }

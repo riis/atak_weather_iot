@@ -10,6 +10,7 @@ import com.hivemq.client.mqtt.mqtt3.Mqtt3BlockingClient
 import com.hivemq.client.mqtt.mqtt3.Mqtt3Client
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(
@@ -22,11 +23,13 @@ class WeatherViewModel(
 
     private lateinit var mqttClient: Mqtt3BlockingClient
     private val gson = Gson()
-    private val weatherStations = MutableStateFlow<List<WeatherStation>>(emptyList())
+
+    private val _weatherStations = MutableStateFlow<List<WeatherStation>>(emptyList())
+    val weatherStations = _weatherStations.asStateFlow()
 
     init {
         coroutineScope.launch {
-            weatherStations.collect { stations ->
+            _weatherStations.collect { stations ->
                 Log.d(TAG, "Weather stations updated: $stations")
             }
         }
@@ -59,13 +62,13 @@ class WeatherViewModel(
     }
 
     private fun updateWeatherStations(newStation: WeatherStation) {
-        val currentList = weatherStations.value.toMutableList()
+        val currentList = _weatherStations.value.toMutableList()
         val existingIndex = currentList.indexOfFirst { it.ID == newStation.ID }
         if (existingIndex != -1) {
             currentList[existingIndex] = newStation
         } else {
             currentList.add(newStation)
         }
-        weatherStations.value = currentList
+        _weatherStations.value = currentList
     }
 }
