@@ -1,8 +1,5 @@
 package com.atakmap.android.weatheriotplugin.plugin.data
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class WeatherStation(
     val ID: String,
     val PASSWORD: String,

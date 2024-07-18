@@ -12,17 +12,12 @@ import com.atakmap.android.dropdown.DropDownReceiver
 import com.atakmap.android.maps.MapView
 import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.coremap.log.Log
-import com.hivemq.client.mqtt.datatypes.MqttQos
-import com.hivemq.client.mqtt.exceptions.ConnectionFailedException
-import com.hivemq.client.mqtt.exceptions.MqttClientStateException
-import com.hivemq.client.mqtt.mqtt3.Mqtt3BlockingClient
-import com.hivemq.client.mqtt.mqtt3.Mqtt3Client
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 class WeatherIoTPluginDropDownReceiver(
     mapView: MapView?,
-    private val pluginContext: Context
+    pluginContext: Context
 ) : DropDownReceiver(mapView), OnStateListener {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -53,8 +48,10 @@ class WeatherIoTPluginDropDownReceiver(
                 weatherViewModel.subMqtt(brokerUri, brokerPort)
             } catch (e: NumberFormatException) {
                 Toast.makeText(mainView.context, "Invalid port number", Toast.LENGTH_SHORT).show()
+                Log.w(TAG, e)
             } catch (e: IllegalArgumentException) {
                 Toast.makeText(mainView.context, "Invalid IP Address", Toast.LENGTH_SHORT).show()
+                Log.w(TAG, e)
             }
         }
     }
