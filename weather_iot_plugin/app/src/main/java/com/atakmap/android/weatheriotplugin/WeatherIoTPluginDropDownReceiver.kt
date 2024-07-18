@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.atak.plugins.impl.PluginLayoutInflater
 import com.atakmap.android.dropdown.DropDown.OnStateListener
 import com.atakmap.android.dropdown.DropDownReceiver
@@ -39,9 +40,21 @@ class WeatherIoTPluginDropDownReceiver(
 
         connectButton.setOnClickListener {
             val brokerUri = mainView.findViewById<EditText>(R.id.brokerUriText).text.toString()
-            subMqtt()
+            val brokerPortStr =
+                mainView.findViewById<EditText>(R.id.brokerPortEditText).text.toString()
+            val brokerPort: Int?
+
+            try {
+                brokerPort = brokerPortStr.toInt()
+                subMqtt(brokerUri, brokerPort)
+            } catch (e: NumberFormatException) {
+                Toast.makeText(mainView.context, "Invalid port number", Toast.LENGTH_SHORT).show()
+            } catch (e: IllegalArgumentException) {
+                Toast.makeText(mainView.context, "Invalid IP Address", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
 
     /**************************** PUBLIC METHODS  */
     public override fun disposeImpl() {
@@ -72,15 +85,11 @@ class WeatherIoTPluginDropDownReceiver(
     override fun onDropDownClose() {
     }
 
-    private fun subMqtt() {
+    private fun subMqtt(serverHostIp: String, port: Int) {
         mqttClient = Mqtt3Client.builder()
             .identifier("atak_plugin")
-//			.serverHost("minjerd-riis-laptop.local") // Android sometimes fails to resolve .local domains :(
-//          .serverHost("192.168.1.67") // Mark's laptop on home network
-//			.serverHost("10.5.2.251") // Mark's laptop on RIIS network
-//			.serverHost("192.168.1.195") // Michal's laptop on home network
-            .serverHost("192.168.2.182") // Zain's laptop on home network
-            .serverPort(1883)
+            .serverHost(serverHostIp)
+            .serverPort(port)
             .buildBlocking().apply {
                 try {
                     connect()
@@ -94,7 +103,7 @@ class WeatherIoTPluginDropDownReceiver(
                 } catch (e: ConnectionFailedException) {
                     Log.e(TAG, "MQTT Connection failed! $e")
                 } catch (e: MqttClientStateException) {
-                    Log.e(TAG, "MQTT Client State failed!", e)
+                    Log.e(TAG, "MQTT Client State failed! $e")
                 }
             }
     }
