@@ -31,12 +31,28 @@
             android:text="@string/mqtt_prompt" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/brokerUriText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="8"
-            android:inputType="text"
-            android:text="@string/sample_mqtt_address" />
+            android:inputType="textUri"
+            android:text="@string/sample_mqtt_address"
+            />
+
+        <TextView
+            android:id="@+id/brokerPortText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_port_of_mqtt_broker" />
+
+        <EditText
+            android:id="@+id/brokerPortEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="8"
+            android:inputType="textUri"
+            android:text="@string/_1883"
+            />
 
         <Button
             android:id="@+id/mqtt_connect_btn"

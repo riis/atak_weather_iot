@@ -7,8 +7,9 @@
     <string name="app_desc">This plugin allows you to connect to and display data from IoT weather stations</string>
     <string name="mqtt_prompt">Enter Address of MQTT Broker:</string>
     <string name="connect">Connect</string>
-    <string name="sample_mqtt_address">127.0.0.1:8080</string>
-
+    <string name="sample_mqtt_address">10.5.2.63</string>
+    <string name="enter_port_of_mqtt_broker">Enter Port of MQTT Broker:</string>
+    <string name="_1883">1883</string>
 
 
 </resources>
