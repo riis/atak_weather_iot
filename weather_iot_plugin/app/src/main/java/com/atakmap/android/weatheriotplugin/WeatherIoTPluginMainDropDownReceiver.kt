@@ -9,15 +9,14 @@ import android.widget.Toast
 import com.atak.plugins.impl.PluginLayoutInflater
 import com.atakmap.android.dropdown.DropDown.OnStateListener
 import com.atakmap.android.dropdown.DropDownReceiver
+import com.atakmap.android.ipc.AtakBroadcast
 import com.atakmap.android.maps.MapView
 import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.coremap.log.Log
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class WeatherIoTPluginDropDownReceiver(
+class WeatherIoTPluginMainDropDownReceiver(
     mapView: MapView?,
     pluginContext: Context,
     coroutineScope: CoroutineScope,
@@ -38,6 +37,11 @@ class WeatherIoTPluginDropDownReceiver(
         connectButton = mainView.findViewById(R.id.mqtt_connect_btn)
 
         connectButton.setOnClickListener {
+
+            val listIntent = Intent()
+            listIntent.setAction(WeatherIoTPluginStationListDropDownReceiver.SHOW_LIST)
+            AtakBroadcast.getInstance().sendBroadcast(listIntent)
+
             val brokerUri = mainView.findViewById<EditText>(R.id.brokerUriText).text.toString()
             val brokerPortStr =
                 mainView.findViewById<EditText>(R.id.brokerPortEditText).text.toString()
@@ -54,12 +58,6 @@ class WeatherIoTPluginDropDownReceiver(
                 Log.w(TAG, e)
             }
         }
-
-        coroutineScope.launch {
-            weatherViewModel.weatherStations.collect {
-
-            }
-        }
     }
 
 
@@ -71,8 +69,8 @@ class WeatherIoTPluginDropDownReceiver(
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action ?: return
 
-        if (action == SHOW_PLUGIN) {
-            Log.d(TAG, "showing plugin drop down")
+        if (action == SHOW_MAIN) {
+            Log.d(TAG, "showing main drop down")
             showDropDown(
                 mainView, HALF_WIDTH, FULL_HEIGHT, FULL_WIDTH,
                 HALF_HEIGHT, false, this
@@ -94,6 +92,6 @@ class WeatherIoTPluginDropDownReceiver(
 
     companion object {
         private const val TAG = "WeatherIoTPluginDropDownReceiver"
-        const val SHOW_PLUGIN: String = "com.atakmap.android.weatheriotplugin.SHOW_PLUGIN"
+        const val SHOW_MAIN: String = "com.atakmap.android.weatheriotplugin.SHOW_MAIN"
     }
 }

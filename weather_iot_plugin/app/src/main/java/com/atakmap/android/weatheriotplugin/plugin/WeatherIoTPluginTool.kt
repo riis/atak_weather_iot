@@ -2,7 +2,7 @@ package com.atakmap.android.weatheriotplugin.plugin
 
 import android.content.Context
 import com.atak.plugins.impl.AbstractPluginTool
-import com.atakmap.android.weatheriotplugin.WeatherIoTPluginDropDownReceiver
+import com.atakmap.android.weatheriotplugin.WeatherIoTPluginMainDropDownReceiver
 import com.atakmap.util.Disposable
 
 /**
@@ -15,7 +15,7 @@ class WeatherIoTPluginTool(context: Context) : AbstractPluginTool(
     context.getString(R.string.app_name),
     context.getString(R.string.app_name),
     context.resources.getDrawable(R.drawable.ic_launcher),
-    WeatherIoTPluginDropDownReceiver.SHOW_PLUGIN
+    WeatherIoTPluginMainDropDownReceiver.SHOW_MAIN
 ), Disposable {
     override fun dispose() {
     }
