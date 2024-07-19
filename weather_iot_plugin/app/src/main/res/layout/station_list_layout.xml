@@ -20,7 +20,7 @@
         android:text="@string/connectedWeatherStations" />
 
     <com.atakmap.android.gui.PluginSpinner
-        android:id="@+id/behaviour_spinner"
+        android:id="@+id/weather_station_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/weatherStations"

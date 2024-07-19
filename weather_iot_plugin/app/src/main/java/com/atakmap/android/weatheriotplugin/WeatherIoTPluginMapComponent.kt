@@ -53,7 +53,8 @@ class WeatherIoTPluginMapComponent : DropDownMapComponent() {
         listDdr = WeatherIoTPluginStationListDropDownReceiver(
             mapView = view,
             pluginContext = context,
-            coroutineScope = coroutineScope
+            coroutineScope = coroutineScope,
+            weatherViewModel = weatherViewModel
         )
 
         Log.d(TAG, "registering the list filter")
