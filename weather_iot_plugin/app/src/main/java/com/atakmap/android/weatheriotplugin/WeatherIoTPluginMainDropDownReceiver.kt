@@ -14,7 +14,10 @@ import com.atakmap.android.maps.MapView
 import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.coremap.log.Log
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WeatherIoTPluginMainDropDownReceiver(
     mapView: MapView?,
@@ -38,10 +41,6 @@ class WeatherIoTPluginMainDropDownReceiver(
 
         connectButton.setOnClickListener {
 
-            val listIntent = Intent()
-            listIntent.setAction(WeatherIoTPluginStationListDropDownReceiver.SHOW_LIST)
-            AtakBroadcast.getInstance().sendBroadcast(listIntent)
-
             val brokerUri = mainView.findViewById<EditText>(R.id.brokerUriText).text.toString()
             val brokerPortStr =
                 mainView.findViewById<EditText>(R.id.brokerPortEditText).text.toString()
@@ -56,6 +55,24 @@ class WeatherIoTPluginMainDropDownReceiver(
             } catch (e: IllegalArgumentException) {
                 Toast.makeText(mainView.context, "Invalid IP Address", Toast.LENGTH_SHORT).show()
                 Log.w(TAG, e)
+            }
+        }
+
+        coroutineScope.launch {
+            weatherViewModel.isConnected.drop(1).collect { isConnected ->
+                if (isConnected.peekContent()) {
+                    val listIntent = Intent()
+                    listIntent.setAction(WeatherIoTPluginStationListDropDownReceiver.SHOW_LIST)
+                    AtakBroadcast.getInstance().sendBroadcast(listIntent)
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            mainView.context,
+                            "Failed to Connect! Please double check text fields and MQTT Broker!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         }
     }
