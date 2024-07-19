@@ -75,7 +75,7 @@ class WeatherIoTPluginStationListDropDownReceiver(
             val weatherStations = weatherViewModel.weatherStations.value
             val selectedWeatherStationIndex = weatherStationSpinner.selectedItemPosition
             Log.d(TAG, "size=${weatherStations.size} + index=$selectedWeatherStationIndex")
-            weatherViewModel.setSelectedWeatherStation(weatherStations[selectedWeatherStationIndex])
+            weatherViewModel.setSelectedWeatherStation(selectedWeatherStationIndex)
 
             val listIntent = Intent()
             listIntent.setAction(WeatherIoTPluginStationDetailDropDownReceiver.SHOW_DETAIL)

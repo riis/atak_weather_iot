@@ -1,8 +1,5 @@
 package com.atakmap.android.weatheriotplugin
 
-import android.content.Context
-import android.content.Intent
-import android.widget.Toast
 import com.atakmap.android.weatheriotplugin.plugin.data.WeatherStation
 import com.atakmap.android.weatheriotplugin.plugin.utils.SingleEvent
 import com.atakmap.coremap.log.Log
@@ -13,9 +10,7 @@ import com.hivemq.client.mqtt.exceptions.MqttClientStateException
 import com.hivemq.client.mqtt.mqtt3.Mqtt3BlockingClient
 import com.hivemq.client.mqtt.mqtt3.Mqtt3Client
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -37,8 +32,8 @@ class WeatherViewModel(
     private val _isConnected = MutableStateFlow(SingleEvent(false))
     val isConnected = _isConnected.asStateFlow()
 
-    private val _selectedWeatherStation = MutableStateFlow<WeatherStation?>(null)
-    val selectedWeatherStation = _selectedWeatherStation.asStateFlow()
+    private val _selectedWeatherStationIndex = MutableStateFlow<Int?>(null)
+    val selectedWeatherStationIndex = _selectedWeatherStationIndex.asStateFlow()
 
     init {
         coroutineScope.launch {
@@ -107,9 +102,9 @@ class WeatherViewModel(
         _weatherStations.value = currentList
     }
 
-    fun setSelectedWeatherStation(weatherStation: WeatherStation?) {
+    fun setSelectedWeatherStation(weatherStationIndex: Int?) {
         coroutineScope.launch {
-            _selectedWeatherStation.emit(weatherStation)
+            _selectedWeatherStationIndex.emit(weatherStationIndex)
         }
     }
 }
