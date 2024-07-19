@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class WeatherViewModel(
     coroutineScope: CoroutineScope
@@ -50,6 +51,7 @@ class WeatherViewModel(
                             val message = callback.payloadAsBytes.decodeToString()
                             Log.d(TAG, message)
                             val station = gson.fromJson(message, WeatherStation::class.java)
+                            station.dateTime = LocalDateTime.now()
                             updateWeatherStations(station)
                         }
                         .send()
