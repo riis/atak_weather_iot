@@ -65,13 +65,14 @@ class WeatherIoTPluginMapComponent : DropDownMapComponent() {
         detailDdr = WeatherIoTPluginStationDetailDropDownReceiver(
             mapView = view,
             pluginContext = context,
-            coroutineScope = coroutineScope
+            coroutineScope = coroutineScope,
+            weatherViewModel = weatherViewModel
         )
 
         Log.d(TAG, "registering the detail filter")
         val detailDdFilter = DocumentedIntentFilter()
         detailDdFilter.addAction(WeatherIoTPluginStationDetailDropDownReceiver.SHOW_DETAIL)
-        registerDropDownReceiver(mainDdr, detailDdFilter)
+        registerDropDownReceiver(detailDdr, detailDdFilter)
 
         coroutineScope.launch {
             weatherViewModel.weatherStations.collect { newWeatherStations ->

@@ -15,6 +15,7 @@ import com.hivemq.client.mqtt.mqtt3.Mqtt3Client
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -35,6 +36,9 @@ class WeatherViewModel(
 
     private val _isConnected = MutableStateFlow(SingleEvent(false))
     val isConnected = _isConnected.asStateFlow()
+
+    private val _selectedWeatherStation = MutableStateFlow<WeatherStation?>(null)
+    val selectedWeatherStation = _selectedWeatherStation.asStateFlow()
 
     init {
         coroutineScope.launch {
@@ -101,5 +105,11 @@ class WeatherViewModel(
             currentList.add(newStation)
         }
         _weatherStations.value = currentList
+    }
+
+    fun setSelectedWeatherStation(weatherStation: WeatherStation?) {
+        coroutineScope.launch {
+            _selectedWeatherStation.emit(weatherStation)
+        }
     }
 }

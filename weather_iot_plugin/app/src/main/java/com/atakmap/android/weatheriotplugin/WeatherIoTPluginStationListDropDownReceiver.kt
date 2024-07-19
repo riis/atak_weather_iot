@@ -1,5 +1,6 @@
 package com.atakmap.android.weatheriotplugin
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
@@ -22,6 +23,7 @@ import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+@SuppressLint("SetTextI18n")
 class WeatherIoTPluginStationListDropDownReceiver(
     mapView: MapView?,
     pluginContext: Context,
@@ -36,6 +38,7 @@ class WeatherIoTPluginStationListDropDownReceiver(
     )
 
     private val weatherStationSpinner: Spinner = listView.findViewById(R.id.weather_station_spinner)
+    private val selectButton: Button = listView.findViewById(R.id.select_btn)
     private val disconnectButton: Button = listView.findViewById(R.id.mqtt_disconnect_btn)
     private val lastUpdatedText: TextView = listView.findViewById(R.id.detail_station_updated)
 
@@ -66,6 +69,17 @@ class WeatherIoTPluginStationListDropDownReceiver(
                     spinnerAdapter.notifyDataSetChanged()
                 }
             }
+        }
+
+        selectButton.setOnClickListener {
+            val weatherStations = weatherViewModel.weatherStations.value
+            val selectedWeatherStationIndex = weatherStationSpinner.selectedItemPosition
+            Log.d(TAG, "size=${weatherStations.size} + index=$selectedWeatherStationIndex")
+            weatherViewModel.setSelectedWeatherStation(weatherStations[selectedWeatherStationIndex])
+
+            val listIntent = Intent()
+            listIntent.setAction(WeatherIoTPluginStationDetailDropDownReceiver.SHOW_DETAIL)
+            AtakBroadcast.getInstance().sendBroadcast(listIntent)
         }
 
         disconnectButton.setOnClickListener {
