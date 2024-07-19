@@ -76,6 +76,22 @@ class WeatherViewModel(
         }
     }
 
+    fun disconnectMqtt() {
+        coroutineScope.launch {
+            if (::mqttClient.isInitialized && mqttClient.state.isConnected) {
+                try {
+                    mqttClient.disconnect()
+                    _isConnected.emit(SingleEvent(false))
+                    Log.d(TAG, "MQTT Disconnected successfully")
+                } catch (e: Exception) {
+                    Log.e(TAG, "MQTT Disconnection failed! $e")
+                }
+            } else {
+                Log.d(TAG, "MQTT Client is not connected or not initialized")
+            }
+        }
+    }
+
     private fun updateWeatherStations(newStation: WeatherStation) {
         val currentList = _weatherStations.value.toMutableList()
         val existingIndex = currentList.indexOfFirst { it.ID == newStation.ID }

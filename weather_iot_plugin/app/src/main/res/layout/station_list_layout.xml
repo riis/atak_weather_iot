@@ -27,7 +27,7 @@
         android:prompt="@string/station_prompt" />
 
     <Button
-        android:id="@+id/mqtt_connect_btn"
+        android:id="@+id/mqtt_disconnect_btn"
         android:layout_width="187dp"
         android:layout_height="wrap_content"
         android:text="@string/disconnect" />

@@ -5,10 +5,13 @@ import android.content.Intent
 import android.location.Geocoder
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
+import android.widget.TextView
 import com.atak.plugins.impl.PluginLayoutInflater
 import com.atakmap.android.dropdown.DropDown.OnStateListener
 import com.atakmap.android.dropdown.DropDownReceiver
+import com.atakmap.android.ipc.AtakBroadcast
 import com.atakmap.android.maps.MapView
 import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.coremap.log.Log
@@ -16,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class WeatherIoTPluginStationListDropDownReceiver(
@@ -32,6 +36,8 @@ class WeatherIoTPluginStationListDropDownReceiver(
     )
 
     private val weatherStationSpinner: Spinner = listView.findViewById(R.id.weather_station_spinner)
+    private val disconnectButton: Button = listView.findViewById(R.id.mqtt_disconnect_btn)
+    private val lastUpdatedText: TextView = listView.findViewById(R.id.detail_station_updated)
 
     init {
 
@@ -42,6 +48,14 @@ class WeatherIoTPluginStationListDropDownReceiver(
 
         coroutineScope.launch {
             weatherViewModel.weatherStations.collect { weatherStations ->
+
+                if (weatherStations.isNotEmpty()) {
+                    val weatherStationTime = weatherStations[0].dateTime
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                    val formattedDate = weatherStationTime.format(formatter)
+                    lastUpdatedText.text = "Date Updated as of $formattedDate"
+                }
+
                 withContext(Dispatchers.Main) {
                     val stationInfoList = weatherStations.map { station ->
                         val cityName = getCityName(pluginContext, station.latitude, station.longitude) ?: "Unknown City"
@@ -52,6 +66,14 @@ class WeatherIoTPluginStationListDropDownReceiver(
                     spinnerAdapter.notifyDataSetChanged()
                 }
             }
+        }
+
+        disconnectButton.setOnClickListener {
+            weatherViewModel.disconnectMqtt()
+
+            val listIntent = Intent()
+            listIntent.setAction(WeatherIoTPluginMainDropDownReceiver.SHOW_MAIN)
+            AtakBroadcast.getInstance().sendBroadcast(listIntent)
         }
 
     }
