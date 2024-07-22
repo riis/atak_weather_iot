@@ -5,27 +5,27 @@ import sys
 
 weather_stations = [
     {
-        "ID": "StationAlpha",
+        "ID": "Alpha",
         "latitude": 42.605589,
         "longitude": -83.149930
     },
     {
-        "ID": "StationBeta",
+        "ID": "Beta",
         "latitude": 42.609589,
         "longitude": -83.154930
     },
     {
-        "ID": "StationGamma",
+        "ID": "Gamma",
         "latitude": 42.613589,
         "longitude": -83.159930
     },
     {
-        "ID": "StationDelta",
+        "ID": "Delta",
         "latitude": 42.617589,
         "longitude": -83.164930
     },
     {
-        "ID": "StationEpsilon",
+        "ID": "Epsilon",
         "latitude": 42.621589,
         "longitude": -83.169930
     }
