@@ -16,6 +16,7 @@ object PluginNativeLoader {
      * properly.   If it is desirable to use this in a plugin, it will need to be a direct copy in a
      * non-conflicting package name.
      */
+    @JvmStatic
     @Synchronized
     fun init(context: Context) {
         if (ndl == null) {
