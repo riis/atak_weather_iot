@@ -13,7 +13,6 @@ import com.atakmap.android.weatheriotplugin.plugin.data.MarkerData
 import com.atakmap.android.weatheriotplugin.plugin.data.WeatherStation
 import com.atakmap.coremap.log.Log
 import com.atakmap.coremap.maps.coords.GeoPoint
-import gov.tak.platform.graphics.Color
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +20,9 @@ import kotlinx.coroutines.launch
 class WeatherIoTPluginMapComponent : DropDownMapComponent() {
     private var pluginContext: Context? = null
 
-    private var ddr: WeatherIoTPluginDropDownReceiver? = null
+    private var mainDdr: WeatherIoTPluginMainDropDownReceiver? = null
+    private var listDdr: WeatherIoTPluginStationListDropDownReceiver? = null
+    private var detailDdr: WeatherIoTPluginStationDetailDropDownReceiver? = null
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private val weatherViewModel = WeatherViewModel(coroutineScope)
@@ -37,17 +38,41 @@ class WeatherIoTPluginMapComponent : DropDownMapComponent() {
         super.onCreate(context, intent, view)
         pluginContext = context
 
-        ddr = WeatherIoTPluginDropDownReceiver(
+        mainDdr = WeatherIoTPluginMainDropDownReceiver(
             mapView = view,
             pluginContext = context,
             coroutineScope = coroutineScope,
             weatherViewModel = weatherViewModel
         )
 
-        Log.d(TAG, "registering the plugin filter")
-        val ddFilter = DocumentedIntentFilter()
-        ddFilter.addAction(WeatherIoTPluginDropDownReceiver.SHOW_PLUGIN)
-        registerDropDownReceiver(ddr, ddFilter)
+        Log.d(TAG, "registering the main filter")
+        val mainDdFilter = DocumentedIntentFilter()
+        mainDdFilter.addAction(WeatherIoTPluginMainDropDownReceiver.SHOW_MAIN)
+        registerDropDownReceiver(mainDdr, mainDdFilter)
+
+        listDdr = WeatherIoTPluginStationListDropDownReceiver(
+            mapView = view,
+            pluginContext = context,
+            coroutineScope = coroutineScope,
+            weatherViewModel = weatherViewModel
+        )
+
+        Log.d(TAG, "registering the list filter")
+        val listDdFilter = DocumentedIntentFilter()
+        listDdFilter.addAction(WeatherIoTPluginStationListDropDownReceiver.SHOW_LIST)
+        registerDropDownReceiver(listDdr, listDdFilter)
+
+        detailDdr = WeatherIoTPluginStationDetailDropDownReceiver(
+            mapView = view,
+            pluginContext = context,
+            coroutineScope = coroutineScope,
+            weatherViewModel = weatherViewModel
+        )
+
+        Log.d(TAG, "registering the detail filter")
+        val detailDdFilter = DocumentedIntentFilter()
+        detailDdFilter.addAction(WeatherIoTPluginStationDetailDropDownReceiver.SHOW_DETAIL)
+        registerDropDownReceiver(detailDdr, detailDdFilter)
 
         coroutineScope.launch {
             weatherViewModel.weatherStations.collect { newWeatherStations ->

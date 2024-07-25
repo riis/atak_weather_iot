@@ -1,5 +1,7 @@
 package com.atakmap.android.weatheriotplugin.plugin.data
 
+import java.time.LocalDateTime
+
 data class WeatherStation(
     val ID: String,
     val PASSWORD: String,
@@ -31,5 +33,6 @@ data class WeatherStation(
     val frostpoint: Double,
     val heatindex: Double,
     val simmerindex: Double,
-    val solarradiation_perceived: Double
+    val solarradiation_perceived: Double,
+    var dateTime: LocalDateTime,
 )
