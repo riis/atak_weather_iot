@@ -1,20 +1,30 @@
 package com.atakmap.android.weatheriotplugin.plugin
 
-import android.content.Context
-import android.content.Intent
-import com.atak.plugins.impl.AbstractPluginLifecycle
+import com.atak.plugins.impl.AbstractPlugin
+import com.atak.plugins.impl.PluginContextProvider
 import com.atakmap.android.weatheriotplugin.WeatherIoTPluginMapComponent
+import com.atakmap.android.weatheriotplugin.plugin.PluginNativeLoader.init
+import gov.tak.api.plugin.IServiceController
 
 
 /**
- * Please note:
- * Support for versions prior to 4.5.1 can make use of a copy of AbstractPluginLifeCycle shipped with
+ *
+ * AbstractPluginLifeCycle shipped with
  * the plugin.
  */
-class WeatherIoTPluginLifecycle(ctx: Context) :
-    AbstractPluginLifecycle(ctx, WeatherIoTPluginMapComponent()) {
+class WeatherIoTPluginLifecycle(serviceController: IServiceController) : AbstractPlugin(
+    serviceController, WeatherIoTPluginTool(
+        serviceController.getService(
+            PluginContextProvider::class.java
+        ).pluginContext
+    ), WeatherIoTPluginMapComponent()
+) {
     init {
-        PluginNativeLoader.init(ctx)
+        init(
+            serviceController.getService(
+                PluginContextProvider::class.java
+            ).pluginContext
+        )
     }
 
     companion object {
