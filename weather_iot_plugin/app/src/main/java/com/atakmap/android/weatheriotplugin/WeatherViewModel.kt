@@ -32,6 +32,9 @@ class WeatherViewModel(
     private val _isConnected = MutableStateFlow(SingleEvent(false))
     val isConnected = _isConnected.asStateFlow()
 
+    private val _isManuallyDisconnected = MutableStateFlow(SingleEvent(false))
+    val isManuallyDisconnected = _isManuallyDisconnected.asStateFlow()
+
     private val _selectedWeatherStationIndex = MutableStateFlow<Int?>(null)
     val selectedWeatherStationIndex = _selectedWeatherStationIndex.asStateFlow()
 
@@ -40,6 +43,13 @@ class WeatherViewModel(
             _weatherStations.collect { stations ->
                 Log.d(TAG, "Weather stations updated: $stations")
             }
+        }
+    }
+
+    fun confirmManuallyDisconnected() {
+        coroutineScope.launch {
+            _isManuallyDisconnected.emit(SingleEvent(false))
+            return@launch
         }
     }
 
@@ -81,6 +91,7 @@ class WeatherViewModel(
                 try {
                     mqttClient.disconnect()
                     _isConnected.emit(SingleEvent(false))
+                    _isManuallyDisconnected.emit(SingleEvent(true))
                     Log.d(TAG, "MQTT Disconnected successfully")
                 } catch (e: Exception) {
                     Log.e(TAG, "MQTT Disconnection failed! $e")

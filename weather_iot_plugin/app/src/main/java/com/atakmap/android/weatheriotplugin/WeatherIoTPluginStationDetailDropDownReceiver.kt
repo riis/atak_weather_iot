@@ -35,6 +35,9 @@ class WeatherIoTPluginStationDetailDropDownReceiver(
         R.layout.station_detail_layout,
         null
     )
+
+    private var didChangeScreen  = false
+
     private val weatherStations = weatherViewModel.weatherStations
 
     private val stationIdText: TextView = detailView.findViewById(R.id.detail_station_id)
@@ -122,6 +125,7 @@ class WeatherIoTPluginStationDetailDropDownReceiver(
 
         if (action == SHOW_DETAIL) {
             Log.d(TAG, "showing detail drop down")
+            didChangeScreen = true
             showDropDown(
                 detailView, HALF_WIDTH, FULL_HEIGHT, FULL_WIDTH,
                 HALF_HEIGHT, false, this
@@ -139,6 +143,9 @@ class WeatherIoTPluginStationDetailDropDownReceiver(
 
     override fun onDropDownClose() {
         // Handle the drop down close event here
+        if (!didChangeScreen){
+            weatherViewModel.disconnectMqtt()
+        }
     }
 
     override fun onDropDownSizeChanged(width: Double, height: Double) {
@@ -151,6 +158,7 @@ class WeatherIoTPluginStationDetailDropDownReceiver(
 
     private fun backToAllWeatherStationsScreen() {
         weatherViewModel.setSelectedWeatherStation(null)
+        didChangeScreen = true
         val listIntent = Intent()
         listIntent.setAction(WeatherIoTPluginStationListDropDownReceiver.SHOW_LIST)
         AtakBroadcast.getInstance().sendBroadcast(listIntent)
