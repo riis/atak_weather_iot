@@ -35,6 +35,7 @@ class WeatherIoTPluginMainDropDownReceiver(
     )
 
     private var connectButton: Button
+    private var didChangeScreen = false
 
     init {
         connectButton = mainView.findViewById(R.id.mqtt_connect_btn)
@@ -61,9 +62,12 @@ class WeatherIoTPluginMainDropDownReceiver(
         coroutineScope.launch {
             weatherViewModel.isConnected.drop(1).collect { isConnected ->
                 if (isConnected.peekContent()) {
+                    didChangeScreen = true
                     val listIntent = Intent()
                     listIntent.setAction(WeatherIoTPluginStationListDropDownReceiver.SHOW_LIST)
                     AtakBroadcast.getInstance().sendBroadcast(listIntent)
+                } else if(weatherViewModel.isManuallyDisconnected.value.peekContent()) {
+                    weatherViewModel.confirmManuallyDisconnected()
                 } else {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
@@ -87,6 +91,7 @@ class WeatherIoTPluginMainDropDownReceiver(
         val action = intent.action ?: return
 
         if (action == SHOW_MAIN) {
+            didChangeScreen = false
             Log.d(TAG, "showing main drop down")
             showDropDown(
                 mainView, HALF_WIDTH, FULL_HEIGHT, FULL_WIDTH,
@@ -105,6 +110,9 @@ class WeatherIoTPluginMainDropDownReceiver(
     }
 
     override fun onDropDownClose() {
+        if (!didChangeScreen){
+            weatherViewModel.disconnectMqtt()
+        }
     }
 
     companion object {

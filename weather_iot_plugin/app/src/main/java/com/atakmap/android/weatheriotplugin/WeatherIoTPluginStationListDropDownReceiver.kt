@@ -28,7 +28,7 @@ class WeatherIoTPluginStationListDropDownReceiver(
     mapView: MapView?,
     pluginContext: Context,
     coroutineScope: CoroutineScope,
-    weatherViewModel: WeatherViewModel
+    private val weatherViewModel: WeatherViewModel
 ): DropDownReceiver(mapView), OnStateListener {
 
     private val listView: View = PluginLayoutInflater.inflate(
@@ -41,6 +41,7 @@ class WeatherIoTPluginStationListDropDownReceiver(
     private val selectButton: Button = listView.findViewById(R.id.select_btn)
     private val disconnectButton: Button = listView.findViewById(R.id.mqtt_disconnect_btn)
     private val lastUpdatedText: TextView = listView.findViewById(R.id.detail_station_updated)
+    private var didChangeScreen = false
 
     init {
 
@@ -61,8 +62,8 @@ class WeatherIoTPluginStationListDropDownReceiver(
 
                 withContext(Dispatchers.Main) {
                     val stationInfoList = weatherStations.map { station ->
-                        val cityName = getCityName(pluginContext, station.latitude, station.longitude) ?: "Unknown City"
-                        "${station.ID}: $cityName (${station.latitude}, ${station.longitude})"
+                        val cityName = getCityName(pluginContext, station.latitude, station.longitude) ?: ""
+                        "${station.ID}: $cityName(${station.latitude}, ${station.longitude})"
                     }
                     spinnerAdapter.clear()
                     spinnerAdapter.addAll(stationInfoList)
@@ -76,6 +77,8 @@ class WeatherIoTPluginStationListDropDownReceiver(
             val selectedWeatherStationIndex = weatherStationSpinner.selectedItemPosition
             Log.d(TAG, "size=${weatherStations.size} + index=$selectedWeatherStationIndex")
             weatherViewModel.setSelectedWeatherStation(selectedWeatherStationIndex)
+
+            didChangeScreen = true
 
             val listIntent = Intent()
             listIntent.setAction(WeatherIoTPluginStationDetailDropDownReceiver.SHOW_DETAIL)
@@ -96,6 +99,7 @@ class WeatherIoTPluginStationListDropDownReceiver(
         val action = intent.action ?: return
 
         if (action == SHOW_LIST) {
+            didChangeScreen = false
             Log.d(TAG, "showing list drop down")
             showDropDown(
                 listView, HALF_WIDTH, FULL_HEIGHT, FULL_WIDTH,
@@ -111,6 +115,9 @@ class WeatherIoTPluginStationListDropDownReceiver(
     }
 
     override fun onDropDownClose() {
+        if (!didChangeScreen){
+            weatherViewModel.disconnectMqtt()
+        }
     }
 
     override fun onDropDownSizeChanged(p0: Double, p1: Double) {
@@ -125,7 +132,7 @@ class WeatherIoTPluginStationListDropDownReceiver(
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
             if (addresses?.isNotEmpty() == true) {
                 val city = addresses[0].locality
-                city
+                "$city "
             } else {
                 null
             }
