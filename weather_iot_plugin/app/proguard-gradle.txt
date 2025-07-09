@@ -88,13 +88,40 @@
 ######################################################################
 ######################################################################
 
+# Netty
+-dontwarn io.netty.**
+-keep class io.netty.** { *; }
+
+# SLF4J
+-dontwarn org.slf4j.**
+-keep class org.slf4j.** { *; }
+
+# BouncyCastle
+-dontwarn org.bouncycastle.**
+-keep class org.bouncycastle.** { *; }
+
+# Protobuf
+-dontwarn com.google.protobuf.**
+-keep class com.google.protobuf.** { *; }
+
+# LocalBroadcastManager
+-dontwarn androidx.localbroadcastmanager.content.LocalBroadcastManager
+-keep class androidx.localbroadcastmanager.content.LocalBroadcastManager { *; }
+
+# HiveMQ (if used)
+-dontwarn com.hivemq.**
+-keep class com.hivemq.** { *; }
+
+# Suppress error-prone compiler annotation references
+-dontwarn javax.lang.model.element.Modifier
+-dontwarn com.google.errorprone.annotations.**
 
 ######################################################################
 ## Please change PluginTemplate to accurately reflect the name of your 
 ## plugin.  This will help get bug reports to your development group.
 ######################################################################
 
--repackageclasses atakplugin.PluginTemplateLegacy
+-repackageclasses com.riis.weatheriotplugin.plugin
 
 
 ######################################################################

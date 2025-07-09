@@ -11,7 +11,6 @@ import com.atakmap.android.dropdown.DropDown.OnStateListener
 import com.atakmap.android.dropdown.DropDownReceiver
 import com.atakmap.android.ipc.AtakBroadcast
 import com.atakmap.android.maps.MapView
-import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.coremap.log.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
