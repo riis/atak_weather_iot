@@ -14,7 +14,6 @@ import com.atakmap.android.dropdown.DropDown.OnStateListener
 import com.atakmap.android.dropdown.DropDownReceiver
 import com.atakmap.android.ipc.AtakBroadcast
 import com.atakmap.android.maps.MapView
-import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.coremap.log.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,14 +52,14 @@ class WeatherIoTPluginStationListDropDownReceiver(
         coroutineScope.launch {
             weatherViewModel.weatherStations.collect { weatherStations ->
 
-                if (weatherStations.isNotEmpty()) {
-                    val weatherStationTime = weatherStations[0].dateTime
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                    val formattedDate = weatherStationTime.format(formatter)
-                    lastUpdatedText.text = "Date Updated as of $formattedDate"
-                }
-
                 withContext(Dispatchers.Main) {
+                    if (weatherStations.isNotEmpty()) {
+                        val weatherStationTime = weatherStations[0].dateTime
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                        val formattedDate = weatherStationTime.format(formatter)
+                        lastUpdatedText.text = "Date Updated as of $formattedDate"
+                    }
+
                     val stationInfoList = weatherStations.map { station ->
                         val cityName = getCityName(pluginContext, station.latitude, station.longitude) ?: ""
                         "${station.ID}: $cityName(${station.latitude}, ${station.longitude})"
@@ -71,6 +70,7 @@ class WeatherIoTPluginStationListDropDownReceiver(
                 }
             }
         }
+
 
         selectButton.setOnClickListener {
             val weatherStations = weatherViewModel.weatherStations.value

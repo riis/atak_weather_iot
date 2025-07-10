@@ -8,7 +8,6 @@ import com.atakmap.android.maps.MapGroup
 import com.atakmap.android.maps.MapView
 import com.atakmap.android.maps.Marker
 import com.atakmap.android.user.PlacePointTool
-import com.atakmap.android.weatheriotplugin.plugin.R
 import com.atakmap.android.weatheriotplugin.plugin.data.MarkerData
 import com.atakmap.android.weatheriotplugin.plugin.data.WeatherStation
 import com.atakmap.coremap.log.Log

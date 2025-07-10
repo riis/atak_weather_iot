@@ -32,6 +32,7 @@
 
 -keepattributes *Annotation*
 -keepattributes Signature, InnerClasses
+-keepattributes EnclosingMethod, RuntimeVisibleAnnotations, MethodParameters
 
 
 -keep class * implements android.os.Parcelable {
@@ -88,14 +89,82 @@
 ######################################################################
 ######################################################################
 
+# Netty
+-dontwarn io.netty.**
+-keep class io.netty.** { *; }
+
+# SLF4J
+-dontwarn org.slf4j.**
+-keep class org.slf4j.** { *; }
+
+# BouncyCastle
+-dontwarn org.bouncycastle.**
+-keep class org.bouncycastle.** { *; }
+
+# Protobuf
+-dontwarn com.google.protobuf.**
+-keep class com.google.protobuf.** { *; }
+
+# LocalBroadcastManager
+-dontwarn androidx.localbroadcastmanager.content.LocalBroadcastManager
+-keep class androidx.localbroadcastmanager.content.LocalBroadcastManager { *; }
+
+# HiveMQ Client
+-keep class com.hivemq.** { *; }
+-keepnames class com.hivemq.** { *; }
+-keepclassmembers class com.hivemq.** {
+    <fields>;
+    <methods>;
+}
+-dontwarn com.hivemq.**
+
+
+# Gson uses reflection, so we must keep model classes
+-keep class com.atakmap.android.weatheriotplugin.plugin.data.** {
+  <fields>;
+  <methods>;
+}
+
+# Keep all annotations to preserve Kotlin nullability metadata
+-keepattributes Signature, *Annotation*, EnclosingMethod, InnerClasses, MethodParameters
+-keep class kotlin.Metadata { *; }
+-keepclassmembers class ** {
+    @kotlin.Metadata *;
+}
+
+# JCTools - used internally by HiveMQ / Netty
+-dontwarn org.jctools.**
+-keep class org.jctools.** { *; }
+-keepnames class org.jctools.** {
+    long consumerIndex;
+    long producerIndex;
+}
+-keepclassmembers class org.jctools.** {
+    long consumerIndex;
+    long producerIndex;
+    <fields>;
+    <methods>;
+}
+
+# Suppress error-prone compiler annotation references
+-dontwarn javax.lang.model.element.Modifier
+-dontwarn com.google.errorprone.annotations.**
+
+# Prevent reflection-related crashes
+-keep class com.atakmap.android.weatheriotplugin.plugin.i3 { *; }
+-keepclassmembers class com.atakmap.android.weatheriotplugin.plugin.i3 {
+    <fields>;
+    <methods>;
+}
+-keep class com.atakmap.android.weatheriotplugin.plugin.AX { *; }
 
 ######################################################################
 ## Please change PluginTemplate to accurately reflect the name of your 
 ## plugin.  This will help get bug reports to your development group.
 ######################################################################
 
--repackageclasses atakplugin.PluginTemplateLegacy
-
+-repackageclasses com.atakmap.android.weatheriotplugin.plugin
+-flattenpackagehierarchy com.atakmap.android.weatheriotplugin.plugin
 
 ######################################################################
 ## below you can add any rules specific to your plugin limited to 

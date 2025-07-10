@@ -9,7 +9,7 @@
 buildscript {
 
     ext.PLUGIN_VERSION = "1.0"
-    ext.ATAK_VERSION = "5.1.0"
+    ext.ATAK_VERSION = "5.4.0"
 
     def takdevVersion = '3.+'
 
@@ -60,7 +60,7 @@ buildscript {
         maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.8.2'
         if(isDevKitEnabled()) {
             classpath "com.atakmap.gradle:atak-gradle-takdev:${takdevVersion}"
         } else {
@@ -110,9 +110,13 @@ def supportedFlavors =
 ]
 
 android {
-    compileSdkVersion 34
-    buildToolsVersion "30.0.3"
+    compileSdk 35
+    namespace 'com.atakmap.android.weatheriotplugin'
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 
     // this is required and should not be removed otherwise the TAK 
     // innersigning check will fail and the plugin will not load
@@ -131,7 +135,7 @@ android {
     }
 
 
-    lintOptions {
+    lint {
         checkReleaseBuilds true
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
@@ -245,22 +249,26 @@ android {
         }
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
 }
 
 
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.16.0'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation "com.hivemq:hivemq-mqtt-client:1.3.0"
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation "com.hivemq:hivemq-mqtt-client:1.3.7"
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.4'
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 
-    testImplementation 'junit:junit:4.12'
+    implementation 'com.google.protobuf:protobuf-java:3.24.0'
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+    implementation 'com.jcraft:jzlib:1.1.3'
+    implementation 'io.netty:netty-all:4.1.100.Final'
+
+    testImplementation 'junit:junit:4.13.2'
 }
 
