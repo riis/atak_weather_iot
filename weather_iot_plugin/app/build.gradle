@@ -8,7 +8,7 @@
 
 buildscript {
 
-    ext.PLUGIN_VERSION = "1.0"
+    ext.PLUGIN_VERSION = "1.1"
     ext.ATAK_VERSION = "5.4.0"
 
     def takdevVersion = '3.+'
@@ -111,7 +111,7 @@ def supportedFlavors =
 
 android {
     compileSdk 35
-    namespace 'com.atakmap.android.weatheriotplugin'
+    namespace 'com.atakmap.android.weatheriotplugin.plugin'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
