@@ -2,7 +2,6 @@ package com.atakmap.android.weatheriotplugin.plugin
 
 import android.content.Context
 import com.atak.plugins.impl.AbstractPluginTool
-import com.atakmap.android.weatheriotplugin.R
 import com.atakmap.android.weatheriotplugin.WeatherIoTPluginMainDropDownReceiver
 import gov.tak.api.util.Disposable
 

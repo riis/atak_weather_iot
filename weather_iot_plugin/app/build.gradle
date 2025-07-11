@@ -8,7 +8,7 @@
 
 buildscript {
 
-    ext.PLUGIN_VERSION = "1.0"
+    ext.PLUGIN_VERSION = "1.1"
     ext.ATAK_VERSION = "5.4.0"
 
     def takdevVersion = '3.+'
@@ -111,7 +111,7 @@ def supportedFlavors =
 
 android {
     compileSdk 35
-    namespace 'com.atakmap.android.weatheriotplugin'
+    namespace 'com.atakmap.android.weatheriotplugin.plugin'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -214,7 +214,7 @@ android {
             // It is strongly encouraged that plugin developers do not modify the archiveBaseName, version code logic and version 
             // name logic to provide for consistency within the community.   
             setProperty("archivesBaseName", "ATAK-Plugin-" + rootProject.name + "-" + PLUGIN_VERSION + "-" + getVersionName() + "-" + ATAK_VERSION)
-            defaultConfig.versionCode = getVersionCode()
+//            defaultConfig.versionCode = getVersionCode()
             defaultConfig.versionName = PLUGIN_VERSION + " (" + getVersionName() + ") - [" + ATAK_VERSION + "]"
         }
 
@@ -235,7 +235,8 @@ android {
 
     defaultConfig {
         minSdkVersion 26
-        targetSdkVersion 34
+        targetSdkVersion 35
+        versionCode 2
 
         def runTasks = gradle.startParameter.taskNames
         if(runTasks.toString().contains('bundle')) {
