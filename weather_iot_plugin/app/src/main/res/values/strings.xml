@@ -38,5 +38,4 @@
     <string name="select">Select</string>
 
     <string-array name="weatherStations"></string-array>
-
 </resources>

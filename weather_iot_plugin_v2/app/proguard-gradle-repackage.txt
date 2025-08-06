@@ -1,0 +1,1 @@
+-repackageclasses atakplugin.weather_iot_plugin_v2

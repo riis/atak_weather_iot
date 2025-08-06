@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App -->
-    <string name="app_name">Plugin Template</string>
+    <string name="app_name">Weather IoT</string>
+    <string name="app_label">ATAK Weather IoT Plugin</string>
     <!-- description -->
-    <string name="app_desc">This plugin demonstrate bare bones plugin UI, and may be used to start a new plugin project</string>
+    <string name="app_desc">This plugin allows you to connect to and display data from IoT weather stations</string>
+    <string name="mqtt_prompt">Enter Address of MQTT Broker:</string>
+    <string name="connect">Connect</string>
+    <string name="sample_mqtt_address">10.5.2.40</string>
+    <string name="enter_port_of_mqtt_broker">Enter Port of MQTT Broker:</string>
+    <string name="_1883">1883</string>
+    <string name="detail_station_id">🟢 StationID</string>
+    <string name="detail_station_lat_lon">42.1014° N, 83.1087° W</string>
+    <string name="detail_data_updated">Data Updated as of XXXX-XX-XX XX:XX:XX</string>
+    <string name="all_weather_stations">All Weather Stations</string>
+    <string name="table_measurement">Measurement</string>
+    <string name="table_value">Value</string>
 
+    <string name="indoortemp">Indoor Temperature</string>
+    <string name="indoorhumidity">Indoor Humidity</string>
+    <string name="temp">Temperature</string>
+    <string name="humidity">Humidity</string>
+    <string name="windspeed">Wind Speed</string>
+    <string name="windgust">Wind Gust</string>
+    <string name="winddir">Wind Direction</string>
+    <string name="rain">Rain</string>
+    <string name="solarradiation">Solar Radiation</string>
+    <string name="uv">UV</string>
+    <string name="feelslike">Feels Like</string>
+    <string name="frostpoint">Frost Point</string>
+    <string name="loading">Loading...</string>
 
+    <string name="connectedToMQTT">🟢 Connected to MQTT Broker</string>
+    <string name="connectedWeatherStations">Connected Weather Stations:</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="station_prompt">Select a Weather Station</string>
+    <string name="select">Select</string>
 
-
+    <string-array name="weatherStations"></string-array>
 </resources>

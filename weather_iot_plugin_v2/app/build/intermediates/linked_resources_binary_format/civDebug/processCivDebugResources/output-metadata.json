@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "LINKED_RESOURCES_BINARY_FORMAT",
+    "kind": "Directory"
+  },
+  "applicationId": "com.atakmap.android.weatheriotplugin.plugin",
+  "variantName": "civDebug",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 1754494721,
+      "versionName": "1.2 (f68e46b9) - [5.5.0]",
+      "outputFile": "linked-resources-binary-format-civDebug.ap_"
+    }
+  ],
+  "elementType": "File"
+}
