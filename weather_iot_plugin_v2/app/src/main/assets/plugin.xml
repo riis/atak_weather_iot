@@ -4,7 +4,7 @@
 
     <extension
         type="gov.tak.api.plugin.IPlugin"
-        impl="com.atakmap.android.weatheriotplugin.plugin.PluginTemplate"
+        impl="com.atakmap.android.weatheriotplugin.plugin.WeatherIotPlugin"
         singleton="true" />
 
 </plugin>
