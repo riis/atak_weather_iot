@@ -11,6 +11,7 @@ ADDED from /home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weath
 INJECTED from /home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weather_iot_plugin_v2/app/src/main/AndroidManifest.xml:1:1-29:12
 INJECTED from /home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weather_iot_plugin_v2/app/src/main/AndroidManifest.xml:1:1-29:12
 INJECTED from /home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weather_iot_plugin_v2/app/src/main/AndroidManifest.xml:1:1-29:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.1.0] /home/zain/.gradle/caches/8.13/transforms/db35f5a6f38a9ca072b388247d3afbc4/transformed/localbroadcastmanager-1.1.0/AndroidManifest.xml:17:1-24:12
 	package
 		INJECTED from /home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weather_iot_plugin_v2/app/src/main/AndroidManifest.xml
 	android:versionName
@@ -64,6 +65,8 @@ uses-sdk
 INJECTED from /home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weather_iot_plugin_v2/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weather_iot_plugin_v2/app/src/main/AndroidManifest.xml
 INJECTED from /home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weather_iot_plugin_v2/app/src/main/AndroidManifest.xml
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.1.0] /home/zain/.gradle/caches/8.13/transforms/db35f5a6f38a9ca072b388247d3afbc4/transformed/localbroadcastmanager-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.1.0] /home/zain/.gradle/caches/8.13/transforms/db35f5a6f38a9ca072b388247d3afbc4/transformed/localbroadcastmanager-1.1.0/AndroidManifest.xml:20:5-22:41
 	android:targetSdkVersion
 		INJECTED from /home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weather_iot_plugin_v2/app/src/main/AndroidManifest.xml
 	android:minSdkVersion

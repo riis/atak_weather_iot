@@ -35,7 +35,7 @@
     <string name="table_value">Value</string>
     <string name="temp">Temperature</string>
     <string name="uv">UV</string>
-    <string name="versionName" translatable="false">1.2 (f68e46b9) - [5.5.0]</string>
+    <string name="versionName" translatable="false">1.2 (ad97fc53) - [5.5.0]</string>
     <string name="winddir">Wind Direction</string>
     <string name="windgust">Wind Gust</string>
     <string name="windspeed">Wind Speed</string>

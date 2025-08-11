@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.atakmap.android.weatheriotplugin.plugin.app-civDebug-5:/values_values.arsc.flat",
+            "outputFile": "com.atakmap.android.weatheriotplugin.plugin.app-civDebug-6:/values_values.arsc.flat",
             "map": [
                 {
                     "source": "/home/zain/StudioProjects/ATAK-CIV-5.5.0.1-SDK/atak_weather_iot/weather_iot_plugin_v2/app/src/main/res/values/dimen.xml",

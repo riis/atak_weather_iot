@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.atakmap.android.weatheriotplugin.plugin"
-    android:versionCode="1754494721"
-    android:versionName="1.2 (f68e46b9) - [5.5.0]" >
+    android:versionCode="1754505800"
+    android:versionName="1.2 (ad97fc53) - [5.5.0]" >
 
     <uses-sdk
-        android:minSdkVersion="21"
+        android:minSdkVersion="26"
         android:targetSdkVersion="35" />
 
     <application

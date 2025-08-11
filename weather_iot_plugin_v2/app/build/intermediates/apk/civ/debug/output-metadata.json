@@ -11,11 +11,11 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 1754494721,
-      "versionName": "1.2 (f68e46b9) - [5.5.0]",
-      "outputFile": "ATAK-Plugin-weather_iot_plugin_v2-1.2-f68e46b9-5.5.0-civ-debug.apk"
+      "versionCode": 1754505800,
+      "versionName": "1.2 (ad97fc53) - [5.5.0]",
+      "outputFile": "ATAK-Plugin-weather_iot_plugin_v2-1.2-ad97fc53-5.5.0-civ-debug.apk"
     }
   ],
   "elementType": "File",
-  "minSdkVersionForDexing": 24
+  "minSdkVersionForDexing": 26
 }
